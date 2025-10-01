@@ -139,7 +139,16 @@ async function main() {
     },
   });
 
-  console.log(`✓ Created ${[adminUser, user1, user2].length} users`);
+  const testUser = await prisma.user.create({
+    data: {
+      email: "test@example.com",
+      name: "Test User",
+      password: testPassword,
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=test",
+    },
+  });
+
+  console.log(`✓ Created ${[adminUser, user1, user2, testUser].length} users`);
 
   // Create Servers
   console.log("🖥️  Creating servers...");
@@ -303,6 +312,7 @@ async function main() {
   console.log("   Email: admin@vault5.dev");
   console.log("   Email: john@vault5.dev");
   console.log("   Email: jane@vault5.dev");
+  console.log("   Email: test@example.com");
   console.log("   Password: password123");
   console.log(`\n🔑 Test API Key: ${apiKey1.key}`);
 }

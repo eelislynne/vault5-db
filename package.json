@@ -5,13 +5,15 @@
   "main": "index.js",
   "files": [
     "prisma/schema.prisma",
-    "index.js"
+    "index.js",
+    "seed.ts"
   ],
   "scripts": {
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
-    "prisma:push": "prisma db push"
+    "prisma:push": "prisma db push",
+    "prisma:seed": "tsx seed.ts"
   },
   "keywords": [
     "vault5",
@@ -23,11 +25,16 @@
     "@prisma/client": "^6.16.2"
   },
   "devDependencies": {
-    "prisma": "^6.16.2"
+    "@types/bcryptjs": "^2.4.6",
+    "bcryptjs": "^3.0.2",
+    "nanoid": "^5.1.5",
+    "prisma": "^6.16.2",
+    "tsx": "^4.20.5",
+    "typescript": "^5.4.3"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourorg/vault5-db.git"
+    "url": "https://github.com/eelislynne/vault5-db.git"
   },
   "license": "ISC"
 }

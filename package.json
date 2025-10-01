@@ -1,0 +1,33 @@
+{
+  "name": "@vault5/db",
+  "version": "1.0.0",
+  "description": "Shared Prisma schema for vault5 platform",
+  "main": "index.js",
+  "files": [
+    "prisma/schema.prisma",
+    "index.js"
+  ],
+  "scripts": {
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "prisma:push": "prisma db push"
+  },
+  "keywords": [
+    "vault5",
+    "prisma",
+    "database",
+    "schema"
+  ],
+  "dependencies": {
+    "@prisma/client": "^6.16.2"
+  },
+  "devDependencies": {
+    "prisma": "^6.16.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourorg/vault5-db.git"
+  },
+  "license": "ISC"
+}

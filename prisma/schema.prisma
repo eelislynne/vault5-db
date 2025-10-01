@@ -1,0 +1,119 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  password  String?
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ownedServers    Server[]     @relation("ServerOwner")
+  serverMembers   ServerMember[]
+  apiKeys         ApiKey[]
+}
+
+model Server {
+  id                    String   @id
+  name                  String
+  description           String?
+  ownerId               String
+  planId                String
+  elasticsearchHostId   String
+  elasticsearchIndex    String   @default("")
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  owner                 User              @relation("ServerOwner", fields: [ownerId], references: [id])
+  plan                  Plan              @relation(fields: [planId], references: [id])
+  elasticsearchHost     ElasticsearchHost @relation(fields: [elasticsearchHostId], references: [id])
+  members               ServerMember[]
+  logBuckets            LogBucket[]
+  apiKeys               ApiKey[]
+}
+
+model ElasticsearchHost {
+  id          String   @id
+  name        String
+  host        String
+  port        Int
+  protocol    String   @default("http")
+  username    String?
+  password    String?
+  region      String   @default("us1")
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  servers     Server[]
+}
+
+model ServerMember {
+  id       String           @id @default(cuid())
+  userId   String
+  serverId String
+  role     ServerRole       @default(VIEWER)
+  joinedAt DateTime         @default(now())
+
+  user     User   @relation(fields: [userId], references: [id])
+  server   Server @relation(fields: [serverId], references: [id])
+
+  @@unique([userId, serverId])
+}
+
+model LogBucket {
+  id            String   @id
+  name          String
+  serverId      String
+  retentionDays Int      @default(30)
+  createdAt     DateTime @default(now())
+
+  server        Server @relation(fields: [serverId], references: [id])
+}
+
+model ApiKey {
+  id         String     @id
+  name       String
+  key        String     @unique
+  serverId   String
+  userId     String
+  permissions Json       @default("[]")
+  lastUsed   DateTime?
+  createdAt  DateTime   @default(now())
+
+  server     Server @relation(fields: [serverId], references: [id])
+  user       User   @relation(fields: [userId], references: [id])
+}
+
+model Plan {
+  id            String   @id
+  name          String   @unique
+  displayName   String
+  retentionDays Int
+  price         Float    @default(0)
+  features      Json     @default("[]")
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  servers       Server[]
+}
+
+enum ServerRole {
+  OWNER
+  ADMIN
+  EDITOR
+  VIEWER
+}
+

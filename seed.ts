@@ -81,13 +81,13 @@ async function main() {
   const esHost1 = await prisma.elasticsearchHost.create({
     data: {
       id: nanoid(),
-      name: "ES Cluster US-East",
-      host: "elasticsearch-us-east.vault5.internal",
+      name: "Vault5 EU",
+      host: "localhost",
       port: 9200,
-      protocol: "https",
+      protocol: "http",
       username: "elastic",
       password: "changeme",
-      region: "us-east-1",
+      region: "eu1",
       isActive: true,
     },
   });
@@ -95,13 +95,13 @@ async function main() {
   const esHost2 = await prisma.elasticsearchHost.create({
     data: {
       id: nanoid(),
-      name: "ES Cluster EU-West",
-      host: "elasticsearch-eu-west.vault5.internal",
+      name: "Vault5 US",
+      host: "localhost",
       port: 9200,
-      protocol: "https",
+      protocol: "http",
       username: "elastic",
       password: "changeme",
-      region: "eu-west-1",
+      region: "us1",
       isActive: true,
     },
   });

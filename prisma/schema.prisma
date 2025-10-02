@@ -13,6 +13,7 @@ model User {
   name                    String?
   password                String?
   avatar                  String?
+  role                    UserRole       @default(CUSTOMER)
   notificationPreferences Json?          @default("{}")
   createdAt               DateTime       @default(now())
   updatedAt               DateTime       @updatedAt
@@ -106,4 +107,10 @@ enum ServerRole {
   ADMIN
   EDITOR
   VIEWER
+}
+
+enum UserRole {
+  CUSTOMER
+  ADMIN
+  SUPERADMIN
 }

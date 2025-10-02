@@ -117,6 +117,7 @@ async function main() {
       email: "admin@vault5.dev",
       name: "Admin User",
       password: testPassword,
+      role: "ADMIN",
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=admin",
     },
   });
@@ -126,6 +127,7 @@ async function main() {
       email: "john@vault5.dev",
       name: "John Doe",
       password: testPassword,
+      role: "CUSTOMER",
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=john",
     },
   });
@@ -135,6 +137,7 @@ async function main() {
       email: "jane@vault5.dev",
       name: "Jane Smith",
       password: testPassword,
+      role: "CUSTOMER",
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=jane",
     },
   });
@@ -144,6 +147,7 @@ async function main() {
       email: "test@example.com",
       name: "Test User",
       password: testPassword,
+      role: "CUSTOMER",
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=test",
     },
   });

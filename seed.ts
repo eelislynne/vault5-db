@@ -29,6 +29,8 @@ async function main() {
       displayName: "Free",
       retentionDays: 7,
       price: 0,
+      stripePriceId: null, // Free plan has no Stripe Price ID
+      interval: "month",
       features: JSON.stringify([
         "1GB storage",
         "7 day retention",
@@ -45,6 +47,8 @@ async function main() {
       displayName: "Pro",
       retentionDays: 30,
       price: 29.99,
+      stripePriceId: process.env.STRIPE_PRICE_ID_PRO || "price_pro_placeholder", // Replace with real Stripe Price ID
+      interval: "month",
       features: JSON.stringify([
         "50GB storage",
         "30 day retention",
@@ -62,6 +66,8 @@ async function main() {
       displayName: "Enterprise",
       retentionDays: 90,
       price: 99.99,
+      stripePriceId: process.env.STRIPE_PRICE_ID_ENTERPRISE || "price_enterprise_placeholder", // Replace with real Stripe Price ID
+      interval: "month",
       features: JSON.stringify([
         "Unlimited storage",
         "90 day retention",
@@ -154,7 +160,7 @@ async function main() {
 
   console.log(`✓ Created ${[adminUser, user1, user2, testUser].length} users`);
 
-  // Create Servers
+  // Create Servers (all start on FREE plan by default)
   console.log("🖥️  Creating servers...");
   const server1 = await prisma.server.create({
     data: {
@@ -162,7 +168,7 @@ async function main() {
       name: "Production API",
       description: "Main production API server logs",
       ownerId: adminUser.id,
-      planId: enterprisePlan.id,
+      planId: freePlan.id, // Start on free plan
       elasticsearchHostId: esHost1.id,
       elasticsearchIndex: "logs-prod-api",
     },
@@ -174,7 +180,7 @@ async function main() {
       name: "Development Environment",
       description: "Development and testing logs",
       ownerId: user1.id,
-      planId: proPlan.id,
+      planId: freePlan.id, // Start on free plan
       elasticsearchHostId: esHost1.id,
       elasticsearchIndex: "logs-dev",
     },
@@ -186,7 +192,7 @@ async function main() {
       name: "Personal Project",
       description: "My side project logs",
       ownerId: user2.id,
-      planId: freePlan.id,
+      planId: freePlan.id, // Start on free plan
       elasticsearchHostId: esHost2.id,
       elasticsearchIndex: "logs-personal",
     },

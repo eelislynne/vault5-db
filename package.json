@@ -13,7 +13,11 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
     "prisma:push": "prisma db push",
-    "prisma:seed": "tsx seed.ts"
+    "prisma:seed": "tsx seed.ts",
+    "seed": "tsx seed.ts",
+    "seed:logs": "tsx seed-fivem-logs.ts",
+    "clear:logs": "tsx clear-logs.ts",
+    "list:servers": "tsx list-servers.ts"
   },
   "keywords": [
     "vault5",

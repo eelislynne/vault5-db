@@ -1,9 +1,27 @@
+/**
+ * Vault5 Log Clearing Script
+ * 
+ * Clears all logs for a specific server from Elasticsearch.
+ * 
+ * Usage:
+ *   npx tsx clear-logs.ts <serverId>
+ * 
+ * Examples:
+ *   npx tsx clear-logs.ts srv_emxy0tr14x
+ *   npx tsx clear-logs.ts srv_abc123xyz
+ * 
+ * Default server ID: srv_emxy0tr14x (change on line 25 if needed)
+ * 
+ * ⚠️ Warning: This permanently deletes all logs for the specified server!
+ */
+
 import { PrismaClient } from "@prisma/client";
 import { Client } from "@elastic/elasticsearch";
 
 const prisma = new PrismaClient();
 
 async function main() {
+    // ⚙️ CHANGE DEFAULT SERVER ID HERE if needed
     const serverId = process.argv[2] || "srv_emxy0tr14x";
 
     console.log(`🗑️  Clearing logs for server: ${serverId}\n`);

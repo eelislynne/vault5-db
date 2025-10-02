@@ -10,7 +10,7 @@
  *   npx tsx seed-fivem-logs.ts srv_emxy0tr14x 200
  *   npx tsx seed-fivem-logs.ts srv_abc123xyz 500
  * 
- * Default server ID: srv_emxy0tr14x (change on line 327 if needed)
+ * Default server ID: srv_emxy0tr14x (change on line 350 if needed)
  * Default count: 200 logs
  * 
  * Generated Log Types:

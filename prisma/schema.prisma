@@ -8,16 +8,17 @@ datasource db {
 }
 
 model User {
-  id            String         @id @default(cuid())
-  email         String         @unique
-  name          String?
-  password      String?
-  avatar        String?
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  apiKeys       ApiKey[]
-  ownedServers  Server[]       @relation("ServerOwner")
-  serverMembers ServerMember[]
+  id                      String         @id @default(cuid())
+  email                   String         @unique
+  name                    String?
+  password                String?
+  avatar                  String?
+  notificationPreferences Json?          @default("{}")
+  createdAt               DateTime       @default(now())
+  updatedAt               DateTime       @updatedAt
+  apiKeys                 ApiKey[]
+  ownedServers            Server[]       @relation("ServerOwner")
+  serverMembers           ServerMember[]
 }
 
 model Server {

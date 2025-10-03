@@ -14,6 +14,7 @@ async function main() {
   console.log("🗑️  Cleaning existing data...");
   await prisma.apiKey.deleteMany();
   await prisma.logBucket.deleteMany();
+  await prisma.defaultLogBucket.deleteMany();
   await prisma.serverMember.deleteMany();
   await prisma.server.deleteMany();
   await prisma.plan.deleteMany();
@@ -228,47 +229,103 @@ async function main() {
 
   console.log(`✓ Created ${[member1, member2, member3].length} server members`);
 
-  // Create Log Buckets
-  console.log("🗂️  Creating log buckets...");
-  const bucket1 = await prisma.logBucket.create({
-    data: {
+  // Create Default Log Bucket Templates (FiveM-focused)
+  console.log("📋 Creating default log bucket templates...");
+  const defaultBuckets = [
+    {
       id: nanoid(),
-      name: "application",
-      serverId: server1.id,
-      retentionDays: 90,
+      name: "General",
+      slug: "general",
+      description: "General server logs and system messages",
+      sortOrder: 1,
     },
-  });
-
-  const bucket2 = await prisma.logBucket.create({
-    data: {
+    {
       id: nanoid(),
-      name: "errors",
-      serverId: server1.id,
-      retentionDays: 180,
+      name: "Anticheat",
+      slug: "anticheat",
+      description: "Anti-cheat detections and violations",
+      sortOrder: 2,
     },
-  });
+    {
+      id: nanoid(),
+      name: "Economy",
+      slug: "economy",
+      description: "Economy transactions and money logs",
+      sortOrder: 3,
+    },
+    {
+      id: nanoid(),
+      name: "Events",
+      slug: "events",
+      description: "Player events and interactions",
+      sortOrder: 4,
+    },
+    {
+      id: nanoid(),
+      name: "Admin",
+      slug: "admin",
+      description: "Admin actions and commands",
+      sortOrder: 5,
+    },
+    {
+      id: nanoid(),
+      name: "Errors",
+      slug: "errors",
+      description: "Server errors and exceptions",
+      sortOrder: 6,
+    },
+  ];
 
-  const bucket3 = await prisma.logBucket.create({
+  for (const bucket of defaultBuckets) {
+    await prisma.defaultLogBucket.create({
+      data: bucket,
+    });
+  }
+
+  console.log(`✓ Created ${defaultBuckets.length} default log bucket templates`);
+
+  // Create Log Buckets (copy from default templates)
+  console.log("🗂️  Creating log buckets from templates...");
+  const createdBuckets = [];
+
+  // Server1 gets all default buckets
+  for (const template of defaultBuckets) {
+    const bucket = await prisma.logBucket.create({
+      data: {
+        id: nanoid(),
+        name: template.name,
+        slug: template.slug,
+        description: template.description,
+        serverId: server1.id,
+      },
+    });
+    createdBuckets.push(bucket);
+  }
+
+  // Server2 gets basic buckets
+  const bucket2_1 = await prisma.logBucket.create({
     data: {
       id: nanoid(),
-      name: "access",
+      name: "General",
+      slug: "general",
+      description: "General server logs",
       serverId: server2.id,
-      retentionDays: 30,
     },
   });
+  createdBuckets.push(bucket2_1);
 
-  const bucket4 = await prisma.logBucket.create({
+  const bucket2_2 = await prisma.logBucket.create({
     data: {
       id: nanoid(),
-      name: "debug",
-      serverId: server3.id,
-      retentionDays: 7,
+      name: "Errors",
+      slug: "errors",
+      description: "Error logs",
+      serverId: server2.id,
     },
   });
+  createdBuckets.push(bucket2_2);
 
-  console.log(
-    `✓ Created ${[bucket1, bucket2, bucket3, bucket4].length} log buckets`
-  );
+  console.log(`✓ Created ${createdBuckets.length} log buckets from templates`);
 
   // Create API Keys
   console.log("🔑 Creating API keys...");
